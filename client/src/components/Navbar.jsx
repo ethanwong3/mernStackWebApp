@@ -3,7 +3,7 @@ import styled from "styled-components";
 import LogoImg from "../utils/Images/Logo.png";
 import { Link as LinkR, NavLink } from "react-router-dom";
 import { MenuRounded } from "@mui/icons-material";
-//import { Avatar } from "@mui/material";
+import { Avatar } from "@mui/material";
 //import { useDispatch } from "react-redux";
 //import { logout } from "../redux/reducers/userSlice";
 // position: sticky // keeps it at top of page when scrolling
@@ -92,13 +92,60 @@ const Navlink = styled(NavLink)`
   }
 `;
 
+const UserContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  align-items: center;
+  padding: 0 6px;
+  color: ${({ theme }) => theme.primary};
+`;
+const TextButton = styled.div`
+  text-align: end;
+  color: ${({ theme }) => theme.seconday};
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  &:hover {
+    color: ${({ theme }) => theme.primary};
+  }
+`;
+
+// padding // top&bottom left&right OR t b l r
+// list-style: none // no particular styling for list
+// isOpen => opacity and zindex reveal it and transform performs a falling transition
+const MobileMenu = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+    padding: 0 6px;
+    list-style: none;
+    width: 90%;
+    padding 12px 40px 24px 40px;
+    background: ${({ theme }) => theme.bg};
+    position: absolute;
+    top: 80px;
+    right: 0;
+    transition: all 0.6s ease-in-out;
+    transform: ${({ isOpen }) =>
+      isOpen ? "translateY(0)" : "translateY(-100%)"};
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
+    z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
+`;
+
 // mobile icon is hamburger menu
 // inherit // implies that component inherits parent components color
 const Navbar = () => {
+  const [isOpen, setisOpen] = useState(false);
   return (
     <Nav>
       <NavContainer>
-        <Mobileicon>
+        <Mobileicon onClick={() => setisOpen(!isOpen)}>
           <MenuRounded sx={{ color: "inherit" }} />
         </Mobileicon>
 
@@ -106,6 +153,14 @@ const Navbar = () => {
           <Logo src={LogoImg} />
           Fittrack
         </NavLogo>
+
+        <MobileMenu isOpen={isOpen}>
+          <Navlink to="/">Dashboard</Navlink>
+          <Navlink to="/workouts">Workouts</Navlink>
+          <Navlink to="/tutorials">Tutorials</Navlink>
+          <Navlink to="/blogs">Blogs</Navlink>
+          <Navlink to="/contact">Contact</Navlink>
+        </MobileMenu>
 
         <NavItems>
           <Navlink to="/">Dashboard</Navlink>
@@ -115,6 +170,11 @@ const Navbar = () => {
           <Navlink to="/contact">Contact</Navlink>
         </NavItems>
       </NavContainer>
+
+      <UserContainer>
+        <Avatar />
+        <TextButton>Logout</TextButton>
+      </UserContainer>
     </Nav>
   );
 };
