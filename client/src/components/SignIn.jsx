@@ -47,7 +47,7 @@ const SignIn = () => {
           placeholder="Enter your password"
           password
         />
-        <Button />
+        <Button text="SignIn" />
       </div>
     </Container>
   );

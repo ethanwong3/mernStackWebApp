@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 // @media .... // changes to non displayed when screen sized minimised
-// position: relative // ???
+// position: relative // relative to its normal positon ineffective to others
 const Left = styled.div`
   flex: 1;
   position: relative;
@@ -27,7 +27,7 @@ const Left = styled.div`
   }
 `;
 
-// position: absolute // ???
+// position: absolute // relative to its nearest positioned ancestor
 const Logo = styled.img`
   position: absolute;
   width: 70px;
@@ -65,7 +65,7 @@ const Text = styled.div`
   }
 `;
 
-// span // ???
+// span // inline (not creating new line) eleemnt (typically used to style specific text regions)
 // cusor: pointer // when hover, curosr becomes pointer
 const TextButton = styled.span`
   color: ${({ theme }) => theme.primary};

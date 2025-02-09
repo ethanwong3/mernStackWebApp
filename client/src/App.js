@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Authentication from "./pages/Authentication";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-//import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 //import Dashboard from "./pages/Dashboard";
 //import Workouts from "./pages/Workouts";
 
@@ -21,12 +21,19 @@ const Container = styled.div`
 `;
 
 function App() {
+  const [user, serUser] = useState(true);
   return (
     <ThemeProvider theme={lightTheme}>
       <BrowserRouter>
-        <Container>
-          <Authentication />
-        </Container>
+        {user ? (
+          <Container>
+            <Navbar />
+          </Container>
+        ) : (
+          <Container>
+            <Authentication />
+          </Container>
+        )}
       </BrowserRouter>
     </ThemeProvider>
   );
