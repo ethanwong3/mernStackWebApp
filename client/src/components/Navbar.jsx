@@ -1,3 +1,5 @@
+// possibly make hamburger menu come out horizontally
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import LogoImg from "../utils/Images/Logo.png";
@@ -28,7 +30,7 @@ const NavContainer = styled.div`
   display: flex;
   gap: 14px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   font-size: 1rem;
 `;
 
@@ -39,6 +41,7 @@ const NavLogo = styled(LinkR)`
   gap: 16px;
   padding: 0 6px;
   font-weight: 600;
+  font-size: 18px;
   text-decoration: none;
   color: ${({ theme }) => theme.black};
 `;
@@ -102,9 +105,11 @@ const UserContainer = styled.div`
   padding: 0 6px;
   color: ${({ theme }) => theme.primary};
 `;
+
 const TextButton = styled.div`
   text-align: end;
-  color: ${({ theme }) => theme.seconday};
+  color: ${({ theme }) => theme.secondary};
+  cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;
   font-weight: 600;
@@ -116,26 +121,26 @@ const TextButton = styled.div`
 // padding // top&bottom left&right OR t b l r
 // list-style: none // no particular styling for list
 // isOpen => opacity and zindex reveal it and transform performs a falling transition
-const MobileMenu = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 16px;
-    padding: 0 6px;
-    list-style: none;
-    width: 90%;
-    padding 12px 40px 24px 40px;
-    background: ${({ theme }) => theme.bg};
-    position: absolute;
-    top: 80px;
-    right: 0;
-    transition: all 0.6s ease-in-out;
-    transform: ${({ isOpen }) =>
-      isOpen ? "translateY(0)" : "translateY(-100%)"};
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-    opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
-    z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
+const MobileMenu = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+  padding: 0 6px;
+  list-style: none;
+  width: 90%;
+  padding: 12px 40px 24px 40px;
+  background: ${({ theme }) => theme.bg};
+  position: absolute;
+  top: 64px;
+  right: 0;
+  transition: all 0.6s ease-in-out;
+  transform: ${({ isOpen }) =>
+    isOpen ? "translateY(0)" : "translateY(-100%)"};
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
+  z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
 `;
 
 // mobile icon is hamburger menu
@@ -151,7 +156,7 @@ const Navbar = () => {
 
         <NavLogo to="/">
           <Logo src={LogoImg} />
-          Fittrack
+          75Hard
         </NavLogo>
 
         <MobileMenu isOpen={isOpen}>
