@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { counts } from "../utils/data";
+import CountsCard from "../components/cards/CountsCard";
 
 const Container = styled.div`
   flex: 1;
-  display: flex;
   height: 100%;
+  display: flex;
   justify-content: center;
   padding: 22px 0px;
   overflow-y: scroll;
@@ -22,7 +24,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
-  padding: 0 16px;
+  padding: 0px 16px;
   font-size: 22px;
   color: ${({ theme }) => theme.text_primary};
   font-weight: 500;
@@ -40,15 +42,16 @@ const FlexWrap = styled.div`
   }
 `;
 
+// counts => basic card designs
 const Dashboard = () => {
   return (
     <Container>
       <Wrapper>
         <Title>Dashboard</Title>
         <FlexWrap>
-          <div>Card</div>
-          <div>Card</div>
-          <div>Card</div>
+          {counts.map((item) => (
+            <CountsCard item={item} />
+          ))}
         </FlexWrap>
       </Wrapper>
     </Container>
