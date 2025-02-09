@@ -8,7 +8,7 @@ import { MenuRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 //import { useDispatch } from "react-redux";
 //import { logout } from "../redux/reducers/userSlice";
-// position: sticky // keeps it at top of page when scrolling
+//position: sticky // keeps it at top of page when scrolling
 const Nav = styled.div`
   background-color: ${({ theme }) => theme.bg};
   height: 80px;

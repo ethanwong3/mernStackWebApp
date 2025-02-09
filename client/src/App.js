@@ -5,8 +5,8 @@ import Authentication from "./pages/Authentication";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
-//import Dashboard from "./pages/Dashboard";
-//import Workouts from "./pages/Workouts";
+import Dashboard from "./pages/Dashboard";
+import Workouts from "./pages/Workouts";
 
 const Container = styled.div`
   width: 100%;
@@ -28,6 +28,12 @@ function App() {
         {user ? (
           <Container>
             <Navbar />
+            <Routes>
+              <Route path="/" exact element={<Dashboard />} />
+              <Route path="/workouts" exact element={<Workouts />} />
+              <Route path="/" exact element={<Dashboard />} />
+              <Route path="/" exact element={<Dashboard />} />
+            </Routes>
           </Container>
         ) : (
           <Container>
