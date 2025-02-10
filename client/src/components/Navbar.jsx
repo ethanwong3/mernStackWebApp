@@ -156,7 +156,7 @@ const Navbar = () => {
 
         <NavLogo to="/">
           <Logo src={LogoImg} />
-          75Hard
+          ProjectYou
         </NavLogo>
 
         <MobileMenu isOpen={isOpen}>
