@@ -1,11 +1,36 @@
 # mernStackWebApp
 
 This project is an exploration of developing web apps using the MERN stack. The current implementation and goals of the project are to align with a productivity and self-care web app for users.
-.
-.
-.
-.
-.
+
+In a MERN stack application, the frontend (React) captures user interactions and sends API requests to the backend (Express server). The routes directory maps these API requests to controller functions, which contain the business logic and interact with the database (MongoDB via Mongoose models). The processed response is then returned to the frontend, where it updates the UI accordingly. More specifically:
+
+- User Interaction (Frontend):
+
+The frontend UI captures user actions (e.g., clicking a button, submitting a form, navigating to a new screen).
+These actions trigger an API request (HTTP request) to the backend.
+
+- Routing (Backend - routes/):
+
+The Express router in the routes/ directory maps the API request to the appropriate controller function based on the request URL and method (GET, POST, PUT, DELETE).
+
+- Business Logic (Backend - controllers/):
+
+The controller function processes the request, performing necessary operations such as:
+Validating input data.
+Querying or modifying the MongoDB database using Mongoose models (models/).
+Applying business logic.
+The controller then returns a response (success or error) to the client.
+
+- Database Access (Backend - models/):
+
+The controller interacts with Mongoose models (models/), which define the database schema and handle CRUD operations (Create, Read, Update, Delete).
+
+- Response (Frontend Updates):
+
+The backend sends a response (JSON data) back to the frontend, which updates the UI accordingly (e.g., displaying fetched data, redirecting the user, showing error messages).
+
+---
+
 SetUp:
 
 server => npm install bcrypt cors dotenv express jsonwebtoken mongoose nodemon
@@ -20,11 +45,14 @@ MongoDB link: https://cloud.mongodb.com/v2/67a9e041a78a566fd4b4acf4#/overview
 Use this to generate a good JWT
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-.
-.
-.
-.
-.
+---
+
+Execution:
+
+server && client => npm start
+
+---
+
 Backend, We are using the MVC (Model View Controller) Pattern:
 
 - models: defines the database schema
