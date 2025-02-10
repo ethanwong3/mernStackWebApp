@@ -86,14 +86,14 @@ const Icon = styled.div`
 	`}
 `;
 
-// item is a parameter
-const CountsCard = ({ item }) => {
+// value access data defensively meaning that it returns undefined through && use
+const CountsCard = ({ item, data }) => {
   return (
     <Card>
       <Left>
         <Title>{item.name}</Title>
         <Value>
-          1200
+          {data && data[item.key].toFixed(2)}
           <Unit>{item.unit}</Unit>
           <Span positive>(+10%)</Span>
         </Value>
