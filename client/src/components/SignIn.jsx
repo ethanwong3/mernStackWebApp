@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import TextInput from "./TextInput";
 import Button from "./Button";
+import { UserSignIn } from "../api";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/reducers/userSlice";
 
 const Container = styled.div`
   width: 100%;
@@ -25,6 +28,44 @@ const Span = styled.div`
 
 // what is div and what is the difference between container and span
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateInputs = () => {
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSignIn = async () => {
+    setLoading(true);
+    setButtonDisabled(true);
+    if (validateInputs()) {
+      await UserSignIn({ email, password })
+        .then((res) => {
+          dispatch(loginSuccess(res.data));
+          alert("Login Success");
+
+          setLoading(false);
+          setButtonDisabled(false);
+        })
+        .catch((err) => {
+          alert(err.resopnse.data.message);
+          setLoading(false);
+          setButtonDisabled(false);
+        });
+    }
+
+    setLoading(false); // check
+    setButtonDisabled(false); // check
+  };
+
   return (
     <Container>
       <div>
@@ -39,15 +80,24 @@ const SignIn = () => {
         }}
       >
         <TextInput
-          label="Enter Address"
+          label="Enter Email Address"
           placeholder="Enter your email address"
+          value={email}
+          handleChange={(e) => setEmail(e.target.value)}
         />
         <TextInput
           label="Password"
           placeholder="Enter your password"
           password
+          value={password}
+          handleChange={(p) => setPassword(p.target.value)}
         />
-        <Button text="SignIn" />
+        <Button
+          text="SignIn"
+          onClick={handleSignIn}
+          isLoading={loading}
+          isDisabled={buttonDisabled}
+        />
       </div>
     </Container>
   );

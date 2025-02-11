@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  UserRegister,
   UserLogin,
+  UserRegister,
+  addWorkout,
   getUserDashboard,
   getWorkoutsByDate,
-  addWorkout,
 } from "../controllers/User.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 

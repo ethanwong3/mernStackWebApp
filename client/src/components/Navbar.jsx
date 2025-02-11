@@ -1,13 +1,13 @@
 // possibly make hamburger menu come out horizontally
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import LogoImg from "../utils/Images/Logo.png";
 import { Link as LinkR, NavLink } from "react-router-dom";
 import { MenuRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
-//import { useDispatch } from "react-redux";
-//import { logout } from "../redux/reducers/userSlice";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/reducers/userSlice";
+
 //position: sticky // keeps it at top of page when scrolling
 const Nav = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -145,8 +145,9 @@ const MobileMenu = styled.ul`
 
 // mobile icon is hamburger menu
 // inherit // implies that component inherits parent components color
-const Navbar = () => {
+const Navbar = ({ currentUser }) => {
   const [isOpen, setisOpen] = useState(false);
+  const dispatch = useDispatch();
   return (
     <Nav>
       <NavContainer>
@@ -177,8 +178,8 @@ const Navbar = () => {
       </NavContainer>
 
       <UserContainer>
-        <Avatar />
-        <TextButton>Logout</TextButton>
+        <Avatar src={currentUser?.img}>{currentUser?.name[0]}</Avatar>
+        <TextButton onClick={() => dispatch(logout())}>Logout</TextButton>
       </UserContainer>
     </Nav>
   );
