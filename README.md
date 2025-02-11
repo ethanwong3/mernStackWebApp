@@ -29,6 +29,10 @@ The controller interacts with Mongoose models (models/), which define the databa
 
 The backend sends a response (JSON data) back to the frontend, which updates the UI accordingly (e.g., displaying fetched data, redirecting the user, showing error messages).
 
+API
+
+API is an application programming interface that is a set of rules and endpoints that allows different software applications to communicate with each other. They typically use HTTP methods, GET POST PUT DELETE which is retrieve send update delete.
+
 ---
 
 SetUp:
@@ -68,3 +72,6 @@ Status Codes:
 404 Not Found Client Error Resource doesn’t exist.
 409 Conflict Client Error User already exists (duplicate email).
 500 Internal Server Error Server Error Unexpected error on the backend.
+
+Middleware???
+in express.js, middleware is a function that sits between the request and response cycle. It modifys the req object adding a .user from the JWT decoded. It is added before protexted routes to enforce authentication.
