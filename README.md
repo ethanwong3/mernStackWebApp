@@ -75,3 +75,9 @@ Status Codes:
 
 Middleware???
 in express.js, middleware is a function that sits between the request and response cycle. It modifys the req object adding a .user from the JWT decoded. It is added before protexted routes to enforce authentication.
+
+---
+
+Frontend:
+
+redux => state management => used to store user slices
