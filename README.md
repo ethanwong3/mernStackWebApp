@@ -57,6 +57,16 @@ server && client => npm start
 
 ---
 
+Deployment:
+
+render => webservice => login => connect github => access target repo => save => connect => root change to server => change build command to npm install and start command to npm start => paste env content => create!
+
+netlify => create new website => deploy with github => choose sitename => base directory set to client => build command set to npm run build => publish directory set to client/build => environment variable set key to CI and value to false
+
+change api/index.js API to new URL and push
+
+---
+
 Backend, We are using the MVC (Model View Controller) Pattern:
 
 - models: defines the database schema
