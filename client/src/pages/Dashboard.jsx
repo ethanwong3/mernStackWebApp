@@ -136,7 +136,7 @@ const Dashboard = () => {
           <AddWorkout
             workout={workout}
             setWorkout={setWorkout}
-            onClick={addNewWorkout}
+            addNewWorkout={addNewWorkout}
             buttonLoading={buttonLoading}
           />
         </FlexWrap>
