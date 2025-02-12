@@ -34,7 +34,7 @@ export const UserRegister = async (req, res, next) => {
     const createdUser = await user.save();
 
     // jwt.sign(payload, secret, options) => generates JWT to authenticate users
-    const token = jwt.sign({ id: createdUser }, process.env.JWT, {
+    const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
       expiresIn: "7d",
     });
 
