@@ -43,7 +43,7 @@ const AddWorkout = ({ workout, setWorkout, addNewWorkout, buttonLoading }) => {
 -Weight
 -Duration`}
         value={workout}
-        handelChange={(e) => setWorkout(e.target.value)}
+        handleChange={(e) => setWorkout(e.target.value)}
       />
       <Button
         text="Add Workout"

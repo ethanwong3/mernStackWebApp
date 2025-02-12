@@ -56,7 +56,8 @@ const SignIn = () => {
           setButtonDisabled(false);
         })
         .catch((err) => {
-          alert(err.resopnse.data.message);
+          console.error("Login Error:", err);
+          alert(err.response?.data?.message || "An error occurred");
           setLoading(false);
           setButtonDisabled(false);
         });
