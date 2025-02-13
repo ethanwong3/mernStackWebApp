@@ -94,25 +94,28 @@ const Dashboard = () => {
   const getTodaysWorkout = async () => {
     setLoading(true);
     const token = localStorage.getItem("web-app-token");
-    await getWorkouts(token, "").then((res) => {
-      setTodaysWorkouts(res?.data?.todaysWorkouts);
+    try {
+      const res = await getWorkouts(token, "");
+      setTodaysWorkouts(res?.data?.todaysWorkouts || []);
       console.log(res.data);
-      setLoading(false);
-    });
+    } catch (err) {
+      console.error("Error fetching today's workouts:", err);
+    }
+    setLoading(false);
   };
 
   const addNewWorkout = async () => {
     setButtonLoading(true);
     const token = localStorage.getItem("web-app-token");
-    await addWorkout(token, { workoutString: workout })
-      .then((res) => {
-        dashboardData();
-        getTodaysWorkout();
-        setButtonLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    try {
+      await addWorkout(token, { workoutString: workout });
+      dashboardData();
+      getTodaysWorkout();
+    } catch (err) {
+      console.error("Error adding workout:", err);
+      alert("Failed to add workout");
+    }
+    setButtonLoading(false);
   };
 
   useEffect(() => {

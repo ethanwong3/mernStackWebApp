@@ -54,10 +54,10 @@ const Details = styled.div`
 const WorkoutCard = ({ workout }) => {
   return (
     <Card>
-      <Category>#{workout?.category}</Category>
-      <Name>{workout?.workoutName}</Name>
+      <Category>#{workout?.category ?? "Unknown"}</Category>
+      <Name>{workout?.workoutName ?? "No Name"}</Name>
       <Sets>
-        Count: {workout?.sets} sets X {workout?.reps} reps
+        Count: {workout?.sets ?? 0} sets X {workout?.reps ?? 0} reps
       </Sets>
       <Flex>
         <Details>
