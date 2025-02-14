@@ -3,25 +3,28 @@ import { createError } from "../error.js";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    // Check if the request contains an Authorization header
+    console.log("🔍 Incoming Headers:", req.headers); // Debugging log
+
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log("❌ Invalid Authorization Header");
       return next(createError(401, "Invalid token format!"));
     }
 
-    // Extract the token from the "Authorization" header
     const token = authHeader.split(" ")[1];
 
-    // Check if the token exists
-    if (!token) return next(createError(401, "You are not authenticated"));
+    if (!token) {
+      console.log("❌ Token is missing");
+      return next(createError(401, "You are not authenticated"));
+    }
 
-    // Decode and verify the token using JWT secret
-    const decode = jwt.verify(token, process.env.JWT);
+    const decoded = jwt.verify(token, process.env.JWT);
+    console.log("✅ Token Decoded:", decoded);
 
-    // Attach the decoded user data to the request object
-    req.user = decode;
+    req.user = decoded;
     return next();
   } catch (err) {
+    console.error("❌ JWT Verification Failed:", err);
     next(err);
   }
 };

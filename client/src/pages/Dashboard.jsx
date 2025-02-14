@@ -94,6 +94,7 @@ const Dashboard = () => {
   const getTodaysWorkout = async () => {
     setLoading(true);
     const token = localStorage.getItem("web-app-token");
+    console.log("📌 Sending Token:", token); // Debugging log
     try {
       const res = await getWorkouts(token, "");
       setTodaysWorkouts(res?.data?.todaysWorkouts || []);
@@ -107,15 +108,24 @@ const Dashboard = () => {
   const addNewWorkout = async () => {
     setButtonLoading(true);
     const token = localStorage.getItem("web-app-token");
+    console.log("📌 Sending Token:", token); // Debugging log
     try {
-      await addWorkout(token, { workoutString: workout });
+      const response = await addWorkout(token, { workoutString: workout });
+      console.log("✅ Workout added successfully:", response.data);
+
       dashboardData();
       getTodaysWorkout();
     } catch (err) {
-      console.error("Error adding workout:", err);
-      alert("Failed to add workout");
+      console.error("❌ API Error:", err);
+
+      if (err.response) {
+        alert(`Error: ${err.response.data.message}`);
+      } else {
+        alert("Network Error - Check backend console!");
+      }
+    } finally {
+      setButtonLoading(false);
     }
-    setButtonLoading(false);
   };
 
   useEffect(() => {

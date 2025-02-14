@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { createError } from "../error.js";
 import User from "../models/User.js";
 import Workout from "../models/Workout.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -214,7 +215,7 @@ export const getWorkoutsByDate = async (req, res, next) => {
     );
 
     const todaysWorkouts = await Workout.find({
-      userId: userId,
+      user: userId,
       date: { $gte: startOfDay, $lt: endOfDay },
     });
     const totalCaloriesBurnt = todaysWorkouts.reduce(
@@ -230,66 +231,52 @@ export const getWorkoutsByDate = async (req, res, next) => {
 
 export const addWorkout = async (req, res, next) => {
   try {
+    // Ensure the user is authenticated
     const userId = req.user?.id;
+    if (!userId) {
+      return next(createError(401, "Invalid or missing user ID in token"));
+    }
+
     const { workoutString } = req.body;
     if (!workoutString) {
       return next(createError(400, "Workout string is missing"));
     }
-    // Split workoutString into lines
-    const eachworkout = workoutString.split(";").map((line) => line.trim());
-    // Check if any workouts start with "#" to indicate categories
-    const categories = eachworkout.filter((line) => line.startsWith("#"));
-    if (categories.length === 0) {
-      return next(createError(400, "No categories found in workout string"));
+
+    // Split workout string into lines
+    const eachWorkout = workoutString.split("\n").map((line) => line.trim());
+
+    // Ensure the workout follows the correct format
+    if (eachWorkout.length < 5) {
+      return next(
+        createError(
+          400,
+          "Workout format is incorrect. Please enter in the correct format."
+        )
+      );
     }
 
-    const parsedWorkouts = [];
-    let currentCategory = "";
-    let count = 0;
+    // Parse workout details
+    const workoutDetails = {
+      category: eachWorkout[0].substring(1).trim(),
+      workoutName: eachWorkout[1].substring(1).trim(),
+      sets: parseInt(eachWorkout[2].split("sets")[0].trim()),
+      reps: parseInt(eachWorkout[2].split("sets")[1].split("reps")[0].trim()),
+      weight: parseFloat(eachWorkout[3].split("kg")[0].trim()),
+      duration: parseFloat(eachWorkout[4].split("min")[0].trim()),
+      caloriesBurned: parseFloat(eachWorkout[4].split("min")[0].trim()) * 5, // Example calculation
+      user: new mongoose.Types.ObjectId(userId),
+      date: new Date(),
+    };
 
-    // Loop through each line to parse workout details
-    await eachworkout.forEach((line) => {
-      count++;
-      if (line.startsWith("#")) {
-        const parts = line?.split("\n").map((part) => part.trim());
-        console.log(parts);
-        if (parts.length < 5) {
-          return next(
-            createError(400, `Workout string is missing for ${count}th workout`)
-          );
-        }
-
-        // Update current category
-        currentCategory = parts[0].substring(1).trim();
-        // Extract workout details
-        const workoutDetails = parseWorkoutLine(parts);
-        if (workoutDetails == null) {
-          return next(createError(400, "Please enter in proper format "));
-        }
-
-        if (workoutDetails) {
-          // Add category to workout details
-          workoutDetails.category = currentCategory;
-          parsedWorkouts.push(workoutDetails);
-        }
-      } else {
-        return next(
-          createError(400, `Workout string is missing for ${count}th workout`)
-        );
-      }
-    });
-
-    // Calculate calories burnt for each workout
-    await parsedWorkouts.forEach(async (workout) => {
-      workout.caloriesBurned = parseFloat(calculateCaloriesBurnt(workout));
-      await Workout.create({ ...workout, user: userId });
-    });
+    // Create the workout in the database
+    const newWorkout = await Workout.create(workoutDetails);
 
     return res.status(201).json({
-      message: "Workouts added successfully",
-      workouts: parsedWorkouts,
+      message: "Workout added successfully",
+      workout: newWorkout,
     });
   } catch (err) {
+    console.error("❌ Error in addWorkout:", err);
     next(err);
   }
 };
