@@ -238,8 +238,8 @@ export const addWorkout = async (req, res, next) => {
     }
 
     const { workoutString } = req.body;
-    if (!workoutString) {
-      return next(createError(400, "Workout string is missing"));
+    if (!workoutString || typeof workoutString !== "string") {
+      return next(createError(400, "Invalid workout format"));
     }
 
     // Split workout string into lines
@@ -255,20 +255,53 @@ export const addWorkout = async (req, res, next) => {
       );
     }
 
-    // Parse workout details
+    // Extract and validate workout details
+    const category = eachWorkout[0].replace(/^#/, "").trim();
+    const workoutName = eachWorkout[1].replace(/^- /, "").trim();
+
+    // Validate sets and reps format (ensure correct parsing of "- 5 sets X 15 reps")
+    const setsRepsMatch = eachWorkout[2].match(
+      /^- (\d+)\s*sets\s*X\s*(\d+)\s*reps/
+    );
+    if (!setsRepsMatch) {
+      return next(createError(400, "Invalid sets/reps format"));
+    }
+
+    const sets = parseInt(setsRepsMatch[1], 10);
+    const reps = parseInt(setsRepsMatch[2], 10);
+
+    // Convert weight and duration safely while removing "- " prefix
+    const weight =
+      parseFloat(eachWorkout[3].replace(/^- /, "").replace("kg", "").trim()) ||
+      0;
+    const duration =
+      parseFloat(eachWorkout[4].replace(/^- /, "").replace("min", "").trim()) ||
+      0;
+
+    // Calculate calories burnt (Example formula)
+    const caloriesBurned = duration * 5;
+
+    // Validate extracted values
+    if (isNaN(sets) || isNaN(reps) || isNaN(weight) || isNaN(duration)) {
+      return next(
+        createError(400, "Invalid numeric values in workout details")
+      );
+    }
+
+    // Create workout object
     const workoutDetails = {
-      category: eachWorkout[0].substring(1).trim(),
-      workoutName: eachWorkout[1].substring(1).trim(),
-      sets: parseInt(eachWorkout[2].split("sets")[0].trim()),
-      reps: parseInt(eachWorkout[2].split("sets")[1].split("reps")[0].trim()),
-      weight: parseFloat(eachWorkout[3].split("kg")[0].trim()),
-      duration: parseFloat(eachWorkout[4].split("min")[0].trim()),
-      caloriesBurned: parseFloat(eachWorkout[4].split("min")[0].trim()) * 5, // Example calculation
+      category,
+      workoutName,
+      sets,
+      reps,
+      weight,
+      duration,
+      caloriesBurned,
       user: new mongoose.Types.ObjectId(userId),
       date: new Date(),
     };
 
-    // Create the workout in the database
+    // Save to database
     const newWorkout = await Workout.create(workoutDetails);
 
     return res.status(201).json({
@@ -279,30 +312,4 @@ export const addWorkout = async (req, res, next) => {
     console.error("❌ Error in addWorkout:", err);
     next(err);
   }
-};
-
-// Function to parse workout details from a line
-const parseWorkoutLine = (parts) => {
-  const details = {};
-  console.log(parts);
-  if (parts.length >= 5) {
-    details.workoutName = parts[1].substring(1).trim();
-    details.sets = parseInt(parts[2].split("sets")[0].substring(1).trim());
-    details.reps = parseInt(
-      parts[2].split("sets")[1].split("reps")[0].substring(1).trim()
-    );
-    details.weight = parseFloat(parts[3].split("kg")[0].substring(1).trim());
-    details.duration = parseFloat(parts[4].split("min")[0].substring(1).trim());
-    console.log(details);
-    return details;
-  }
-  return null;
-};
-
-// Function to calculate calories burnt for a workout
-const calculateCaloriesBurnt = (workoutDetails) => {
-  const durationInMinutes = parseInt(workoutDetails.duration);
-  const weightInKg = parseInt(workoutDetails.weight);
-  const caloriesBurntPerMinute = 5; // Sample value, actual calculation may vary
-  return durationInMinutes * caloriesBurntPerMinute * weightInKg;
 };
