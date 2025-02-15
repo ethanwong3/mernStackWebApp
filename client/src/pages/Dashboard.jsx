@@ -75,11 +75,11 @@ const Dashboard = () => {
   const [data, setData] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [todaysWorkouts, setTodaysWorkouts] = useState([]);
-  const [workout, setWorkout] = useState(`#Legs
--Back Squat
--5 setsX15 reps
--30 kg
--10 min`);
+  const [workout, setWorkout] = useState(`# Muscle Worked
+- Exercise Name
+- ? sets X ? reps
+- Weight kg
+- Duration min`);
 
   const dashboardData = async () => {
     setLoading(true);
