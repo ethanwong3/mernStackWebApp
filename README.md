@@ -1,5 +1,36 @@
 # mernStackWebApp
 
+**_ Project Overview _**
+
+This is a MERN Stack Fitness Tracker web application that allows users to:
+
+- Sign Up / Log In securely using JWT authentication.
+- Log Workouts with categories, sets, reps, weights, and duration.
+- View Workout History filtered by date.
+- Track Progress with workout statistics and calorie tracking.
+
+**_ Tech Stack _**
+
+Frontend: React.js (Styled Components, Redux Toolkit)
+Backend: Node.js, Express.js
+Database: MongoDB (Mongoose ORM)
+Authentication: JWT (JSON Web Token)
+API Testing: Postman
+
+**_ Screenshots _**
+
+![alt text](<Screenshot 2025-02-15 at 4.03.52 PM.png>)
+
+![alt text](<Screenshot 2025-02-15 at 4.03.47 PM.png>)
+
+![alt text](<Screenshot 2025-02-15 at 4.03.20 PM.png>)
+
+![alt text](<Screenshot 2025-02-15 at 4.03.29 PM.png>)
+
+![alt text](<Screenshot 2025-02-15 at 4.03.36 PM.png>)
+
+**_ NOTES _**
+
 This project is an exploration of developing web apps using the MERN stack. The current implementation and goals of the project are to align with a productivity and self-care web app for users.
 
 In a MERN stack application, the frontend (React) captures user interactions and sends API requests to the backend (Express server). The routes directory maps these API requests to controller functions, which contain the business logic and interact with the database (MongoDB via Mongoose models). The processed response is then returned to the frontend, where it updates the UI accordingly. More specifically:
@@ -83,7 +114,7 @@ Status Codes:
 409 Conflict Client Error User already exists (duplicate email).
 500 Internal Server Error Server Error Unexpected error on the backend.
 
-Middleware???
+Middleware
 in express.js, middleware is a function that sits between the request and response cycle. It modifys the req object adding a .user from the JWT decoded. It is added before protexted routes to enforce authentication.
 
 ---
